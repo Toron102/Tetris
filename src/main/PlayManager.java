@@ -9,6 +9,7 @@ import java.awt.RenderingHints;
 import mino.Block;
 import mino.Mino;
 import mino.Mino_L1;
+import mino.Mino_L2;
 
 public class PlayManager {
 
@@ -25,6 +26,9 @@ public class PlayManager {
 	final int MINO_START_X;
 	final int MINO_START_Y;
 	
+	//Others
+	public static int dropInterval = 60;
+	
 	public PlayManager() {
 		
 		//Main play area frame
@@ -37,7 +41,7 @@ public class PlayManager {
 		MINO_START_Y = top_y + Block.SIZE;
 		
 		//Set starting mino
-		currentMino = new Mino_L1();
+		currentMino = new Mino_L2();
 		currentMino.setXY(MINO_START_X, MINO_START_Y);
 	}
 	
