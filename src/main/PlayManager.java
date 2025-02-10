@@ -84,10 +84,13 @@ public class PlayManager {
 		
 		//Check if current mino is active
 		if(currentMino.active == false) {
+			
 			//If the mino is not active, put it into the staticBlocks array
 			for(int i = 0; i < currentMino.b.length; i++) {
 				staticBlocks.add(currentMino.b[i]);
 			}
+			
+			currentMino.deactivating = false;
 			
 			//Replace current mino with next mino
 			currentMino = nextMino;
