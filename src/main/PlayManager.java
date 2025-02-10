@@ -8,8 +8,13 @@ import java.awt.RenderingHints;
 
 import mino.Block;
 import mino.Mino;
+import mino.Mino_Bar;
 import mino.Mino_L1;
 import mino.Mino_L2;
+import mino.Mino_Square;
+import mino.Mino_T;
+import mino.Mino_Z1;
+import mino.Mino_Z2;
 
 public class PlayManager {
 
@@ -41,7 +46,7 @@ public class PlayManager {
 		MINO_START_Y = top_y + Block.SIZE;
 		
 		//Set starting mino
-		currentMino = new Mino_L2();
+		currentMino = new Mino_Z2();
 		currentMino.setXY(MINO_START_X, MINO_START_Y);
 	}
 	
