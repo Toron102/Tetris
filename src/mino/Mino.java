@@ -12,6 +12,8 @@ public class Mino {
 	public Block tempB[] = new Block[4];
 	int autoDropCounter = 0;
 	public int direction = 1; //There will be 4 directions
+	boolean leftCollision, rightCollsision, bottomCollision;
+	public boolean active = true;
 	
 	
 	public void create(Color c) {
@@ -31,15 +33,20 @@ public class Mino {
 	
 	public void updateXY(int direction) {
 		
-		this.direction = direction;
-		b[0].x = tempB[0].x;
-		b[0].y = tempB[0].y;
-		b[1].x = tempB[1].x;
-		b[1].y = tempB[1].y;
-		b[2].x = tempB[2].x;
-		b[2].y = tempB[2].y;
-		b[3].x = tempB[3].x;
-		b[3].y = tempB[3].y;
+		checkRotationCollision();
+		
+		if(leftCollision == false && rightCollsision == false && bottomCollision == false) {
+			
+			this.direction = direction;
+			b[0].x = tempB[0].x;
+			b[0].y = tempB[0].y;
+			b[1].x = tempB[1].x;
+			b[1].y = tempB[1].y;
+			b[2].x = tempB[2].x;
+			b[2].y = tempB[2].y;
+			b[3].x = tempB[3].x;
+			b[3].y = tempB[3].y;
+		}
 	}
 	
 	public void getDirection1() {}
@@ -49,6 +56,64 @@ public class Mino {
 	public void getDirection3() {}
 	
 	public void getDirection4() {}
+	
+	public void checkMovementCollision() {
+		
+		leftCollision = false;
+		rightCollsision = false;
+		bottomCollision = false;
+		
+		//Check frame collision
+		//Left wall
+		for(int i = 0; i < b.length; i++) {
+			if(b[i].x == PlayManager.left_x) {
+				leftCollision = true;
+			}
+		}
+		
+		//Right wall
+		for(int i = 0; i < b.length; i++) {
+			if(b[i].x + Block.SIZE == PlayManager.right_x) {
+				rightCollsision = true;
+			}
+		}
+		
+		//Bottom wall
+		for(int i = 0; i < b.length; i++) {
+			if(b[i].y + Block.SIZE == PlayManager.bottom_y) {
+				bottomCollision = true;
+			}
+		}
+	}
+	
+	public void checkRotationCollision() {
+		
+		leftCollision = false;
+		rightCollsision = false;
+		bottomCollision = false;
+		
+		//Check frame collision
+		//Left wall
+		for(int i = 0; i < b.length; i++) {
+			if(tempB[i].x < PlayManager.left_x) {
+				leftCollision = true;
+			}
+		}
+		
+		//Right wall
+		for(int i = 0; i < b.length; i++) {
+			if(tempB[i].x + Block.SIZE > PlayManager.right_x) {
+				rightCollsision = true;
+			}
+		}
+		
+		//Bottom wall
+		for(int i = 0; i < b.length; i++) {
+			if(tempB[i].y + Block.SIZE > PlayManager.bottom_y) {
+				bottomCollision = true;
+			}
+		}
+	}
 	
 	public void update() {
 		
@@ -65,45 +130,58 @@ public class Mino {
 			KeyHandler.upPressed = false;
 		}
 		
+		checkMovementCollision();
+		
 		if(KeyHandler.leftPressed) {
-			
-			b[0].x -= Block.SIZE;
-			b[1].x -= Block.SIZE;
-			b[2].x -= Block.SIZE;
-			b[3].x -= Block.SIZE;
-			
+			//If mino's left side is not hitting leftCollision, it can do left
+			if(leftCollision == false) {
+				b[0].x -= Block.SIZE;
+				b[1].x -= Block.SIZE;
+				b[2].x -= Block.SIZE;
+				b[3].x -= Block.SIZE;
+			}
 			KeyHandler.leftPressed = false;
 		}
 		
 		if(KeyHandler.downPressed) {
-			b[0].y += Block.SIZE;
-			b[1].y += Block.SIZE;
-			b[2].y += Block.SIZE;
-			b[3].y += Block.SIZE;
-			
-			//Reset auto drop counter
-			autoDropCounter = 0;
+			//If mino's bottom is not hitting bottomCollision, it can go down
+			if(bottomCollision == false) {
+				b[0].y += Block.SIZE;
+				b[1].y += Block.SIZE;
+				b[2].y += Block.SIZE;
+				b[3].y += Block.SIZE;
+				
+				//Reset auto drop counter
+				autoDropCounter = 0;
+			}
 			KeyHandler.downPressed = false;
 		}
 		
 		if(KeyHandler.rightPressed) {
-			b[0].x += Block.SIZE;
-			b[1].x += Block.SIZE;
-			b[2].x += Block.SIZE;
-			b[3].x += Block.SIZE;
-			
+			//If mino's collision is not hitting rightCollision, it can go right
+			if(rightCollsision == false) {
+				b[0].x += Block.SIZE;
+				b[1].x += Block.SIZE;
+				b[2].x += Block.SIZE;
+				b[3].x += Block.SIZE;
+			}
 			KeyHandler.rightPressed = false;
 		}
 		
-		autoDropCounter++; //Counter increases every frame
-		if(autoDropCounter == PlayManager.dropInterval) {
-			
-			//Mino goes down
-			b[0].y += Block.SIZE;
-			b[1].y += Block.SIZE;
-			b[2].y += Block.SIZE;
-			b[3].y += Block.SIZE;
-			autoDropCounter = 0;
+		if(bottomCollision) {
+			active = false;
+		}
+		else {
+			autoDropCounter++; //Counter increases every frame
+			if(autoDropCounter == PlayManager.dropInterval) {
+				
+				//Mino goes down
+				b[0].y += Block.SIZE;
+				b[1].y += Block.SIZE;
+				b[2].y += Block.SIZE;
+				b[3].y += Block.SIZE;
+				autoDropCounter = 0;
+			}
 		}
 	}
 	
