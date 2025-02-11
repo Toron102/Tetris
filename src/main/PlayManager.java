@@ -30,17 +30,17 @@ public class PlayManager {
 	
 	//Mino
 	Mino currentMino;
-	final int MINO_START_X;
-	final int MINO_START_Y;
+	public final int MINO_START_X;
+	public final int MINO_START_Y;
 	Mino nextMino;
-	final int NEXT_MINO_X;
-	final int NEXT_MINO_Y;
+	public final int NEXT_MINO_X;
+	public final int NEXT_MINO_Y;
 	public static ArrayList<Block> staticBlocks = new ArrayList<>();
 	
 	//Others
 	public static int dropInterval = 60;
 	boolean gameOver;
-	public static boolean canRestart;
+
 	
 	//Effects
 	boolean effectCounterOn;
@@ -75,7 +75,7 @@ public class PlayManager {
 		nextMino.setXY(NEXT_MINO_X, NEXT_MINO_Y);
 	}
 	
-	private Mino pickMino() {
+	public Mino pickMino() {
 		
 		Mino mino = null;
 		int i  = new Random().nextInt(7);
@@ -258,8 +258,11 @@ public class PlayManager {
 		if(gameOver) {
 			x = left_x + 25;
 			y = top_y + 320;
-			g2.drawString("GAME OVER", x, y);
-			canRestart = true;
+			g2.drawString("GAME OVER", x, y); y+= 70;
+			g2.setColor(Color.white);
+			g2.setFont(g2.getFont().deriveFont(25f));
+			g2.drawString("Press 'R' to restart game", x, y); y+= 35;
+			g2.drawString("Press 'ESC' to quit", x, y);
 		}
 		
 		else if(KeyHandler.pausePressed) {

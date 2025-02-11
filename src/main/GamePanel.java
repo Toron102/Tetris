@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import mino.Mino;
+
 public class GamePanel extends JPanel implements Runnable{
 
 	public static final int WIDTH = 1280;
@@ -23,7 +25,7 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setBackground(Color.black);
 		this.setLayout(null);
-		this.addKeyListener(new KeyHandler());
+		this.addKeyListener(new KeyHandler(this));
 		this.setFocusable(true);
 		
 		pm = new PlayManager();
@@ -82,5 +84,13 @@ public class GamePanel extends JPanel implements Runnable{
 		PlayManager.dropInterval = 60;
 		KeyHandler.pausePressed = false;
 		pm.gameOver = false;
+		pm.currentMino = null;
+		pm.nextMino = null;
+		pm.currentMino = pm.pickMino();
+		pm.currentMino.setXY(pm.MINO_START_X, pm.MINO_START_Y);
+		pm.nextMino = pm.pickMino();
+		pm.nextMino.setXY(pm.NEXT_MINO_X, pm.NEXT_MINO_Y);
+		music.stop();
+		music.play(0, true);
 	}
 }

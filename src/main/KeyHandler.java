@@ -1,12 +1,18 @@
 package main;
 
+import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener{
 
 	PlayManager pm;
+	GamePanel gp;
 	public static boolean upPressed, downPressed, leftPressed, rightPressed, pausePressed, restartPressed;
+	
+	public KeyHandler(GamePanel gp) {
+		this.gp = gp;
+	}
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -45,7 +51,14 @@ public class KeyHandler implements KeyListener{
 				GamePanel.music.stop();
 			}
 		}
-
+		
+		if(code == KeyEvent.VK_R) {
+			gp.restart();
+		}
+		
+		if(code == KeyEvent.VK_ESCAPE) {
+			System.exit(0);
+		}
 		
 	}
 
